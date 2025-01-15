@@ -1,0 +1,110 @@
+.menuBtn{
+    -fx-background-color: transparent;
+    -fx-text-fill: #5e5e5e;
+    -fx-border-color: transparent;
+    -fx-border-radius: 10;
+}
+.active{
+    -fx-text-fill: #e56565;
+    -fx-background-color: transparent;
+    -fx-border-color: #e56565;
+    -fx-border-width: 1 0 1 1;
+    -fx-border-radius: 2;
+}
+.image{
+    -fx-background-color: #ffffff; /* Optional: Background color */
+    -fx-background-radius: 100px; /* Circular shape */
+    -fx-border-radius: 100px; /* Match border to circle */
+    -fx-border-color: #000000; /* Border color */
+    -fx-border-width: 2px; /* Border thickness */
+    -fx-padding: 0;
+    -fx-alignment: center;
+}
+.primaryBtn{
+    -fx-background-color: #e56565;
+    -fx-background-radius: 20;
+    -fx-border-color: none;
+    -fx-text-fill: #ffffff;
+}
+.title{
+    -fx-fill: #5e5e5e;
+    -fx-font-family: Helvetica;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.danger{
+    -fx-text-fill: #ff3333;
+    -fx-fill: #ff3333;
+}
+
+.bookPara{
+    -fx-fill: #5e5e5e;
+    -fx-font-size: 10;
+}
+.subTitle{
+    -fx-fill: #5e5e5e;
+    -fx-font-family: Helvetica;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.subBook{
+    -fx-font-size: 13;
+}
+
+.nonBackBtn{
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-border-color: transparent;
+    -fx-font-family: "Helvetica";
+    -fx-text-fill: rgba(92, 92, 92, 0.48);
+}
+
+.item{
+    -fx-border-color: rgba(94, 94, 94, 0.43);
+    -fx-border-width: 0 0 1 0;
+}
+
+
+.chartContainer{
+    -fx-background-color: #5e5e5e;
+}
+.icon-container{
+    -fx-background-color: transparent;
+    -fx-fill: #e56565;
+}
+
+.table{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.columns{
+    -fx-background-color:  #EFEFEF;
+    -fx-border-color: #5e5e5e;
+    -fx-border-width: 0 0 1 0;
+}
+.dashSec{
+    -fx-background-color: transparent;
+    -fx-border-color: #5e5e5e;
+    -fx-border-radius: 10;
+}
+.dashPrim{
+    -fx-background-color: #5e5e5e;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-border-color: none;
+}
+.dashSec:hover{
+    -fx-background-color: #5e5e5e;
+    -fx-border-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-border-width: 0;
+    -fx-border-radius: 10;
+}
+
+
+.success{
+    -fx-fill: #85ff33;
+}

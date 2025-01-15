@@ -1,0 +1,42 @@
+#subAnchorPaneLeft{
+    -fx-background-color:  linear-gradient(from 25.2381% 0.0% to 100.0% 100.0%, #e56565 0.0%, #ffffff 100.0%);
+}
+#primaryBtn{
+    -fx-background-color: #e56565;
+    -fx-background-radius: 20;
+    -fx-border-color: none;
+}
+#secondaryBtn{
+    -fx-background-color: transparent;
+    -fx-background-radius: 20;
+    -fx-border-color: #5e5e5e;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+
+}
+
+#secondaryBtn:hover{
+    -fx-background-color: #5e5e5e;
+    -fx-text-fill: #ffffff;
+}
+
+.btn{
+    -fx-border-style: none;
+    -fx-border-radius: 20;
+    -fx-background-color: transparent;
+    -fx-border-color: #5e5e5e;
+}
+
+.warning {
+    -fx-text-fill: red;
+    -fx-font-weight: bold;
+}
+
+.success {
+    -fx-text-fill: green;
+    -fx-font-weight: bold;
+}
+
+.btn-warning{
+    -fx-border-color: red;
+}
