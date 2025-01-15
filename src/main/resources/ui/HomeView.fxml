@@ -28,7 +28,7 @@
                               <String fx:value="subBook" />
                            </styleClass>
                         </Text>
-                        <Text layoutX="70.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="200" />
+                        <Text fx:id="borrowedCount" layoutX="67.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="0" />
                         <ImageView fitHeight="32.0" fitWidth="40.0" layoutX="12.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../imgs/icons/bookwhite.png" />
@@ -45,7 +45,7 @@
                               <String fx:value="subBook" />
                            </styleClass>
                         </Text>
-                        <Text layoutX="74.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="12" />
+                        <Text fx:id="overdueCount" layoutX="79.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="0" />
                         <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="13.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../imgs/icons/warningwhite.png" />
@@ -58,28 +58,28 @@
                         <Circle fill="DODGERBLUE" layoutX="29.0" layoutY="41.0" radius="28.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="icon-container" />
                         <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="13.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../imgs/icons/usersaltwhite.png" />
+                              <Image url="@../imgs/icons/bookswhite.png" />
                            </image>
                         </ImageView>
-                        <Text layoutX="78.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Visitors">
+                        <Text layoutX="80.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Books">
                            <styleClass>
                               <String fx:value="bookPara" />
                               <String fx:value="subBook" />
                            </styleClass>
                         </Text>
-                        <Text layoutX="86.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="643" />
+                        <Text fx:id="booksCount" layoutX="82.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="0" />
                      </children>
                   </Pane>
                   <Pane layoutX="611.0" prefHeight="82.0" prefWidth="155.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <Circle fill="DODGERBLUE" layoutX="29.0" layoutY="41.0" radius="28.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="icon-container" />
-                        <Text layoutX="73.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New members">
+                        <Text layoutX="73.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Members">
                            <styleClass>
                               <String fx:value="bookPara" />
                               <String fx:value="subBook" />
                            </styleClass>
                         </Text>
-                        <Text layoutX="73.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="200" />
+                        <Text fx:id="membersCount" layoutX="73.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="0" />
                         <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="13.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../imgs/icons/userswhite.png" />
@@ -91,7 +91,7 @@
             </AnchorPane>
             <AnchorPane layoutY="198.0" prefHeight="130.0" prefWidth="782.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
-                  <Button graphicTextGap="10.0" layoutX="14.0" layoutY="28.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="325.0" styleClass="dashPrim" text="Add new book" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" AnchorPane.leftAnchor="14.0">
+                  <Button graphicTextGap="10.0" layoutX="14.0" layoutY="28.0" mnemonicParsing="false" onAction="#openModal" prefHeight="56.0" prefWidth="325.0" styleClass="dashPrim" text="Add new book" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" AnchorPane.leftAnchor="14.0">
                      <font>
                         <Font name="Helvetica" size="17.0" />
                      </font>

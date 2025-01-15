@@ -1,12 +1,17 @@
 package db;
 
 
+import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import com.mongodb.MongoException;
 import com.mongodb.client.*;
 import com.password4j.Hash;
 import com.password4j.Password;
 import org.bson.Document;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ArrayList;
 
 
 
@@ -96,34 +101,118 @@ public class MongoDBConnection {
         }
     }
 
-//    public static boolean authRegister(String fullName, String email, String password){
-//        try{
-//            // Get collection
-//            MongoCollection<Document> userCollection = database.getCollection("users");
-//            //Hash user Password
-//            Hash hash = Password.hash(password).addPepper("hotHot").withBcrypt();
-//            password = hash.getResult();
-//
-//            Document user = userCollection.find(eq("email", email)).first();
-//            //Check If User Exists in DB
-//            if(user != null){
-//                System.out.println("User already exists");
-//                signupError = "User already exists";
-//                System.out.println(user.toJson());
-//                return false;
-//
-//            }else{
-//                userCollection.insertOne(new Document("email", email).append("password", password).append("fullName", fullName));
-//                System.out.println("User created");
-//            }
-//        }
-//        catch(MongoException e){
-//            String error = "Error registering user: " + e.getMessage();
-//            System.out.println(error);
-//        }
-//        return true;
-//
-//    }
+    public static Boolean addBook(String bookTitle, String bookAuthor, String bookCategory, String bookImage, String datePublished) {
+        try {
+            // Get the "books" collection
+            MongoCollection<Document> booksCollection = database.getCollection("books");
+
+            // Check if the book already exists
+            Document existingBook = booksCollection.find(and(eq("title", bookTitle), eq("author", bookAuthor))).first();
+            if (existingBook != null) {
+                System.out.println("Book already exists");
+                return false; // Book already in the database
+            }
+
+            // Create and insert a new book document
+            Document newBook = new Document("title", bookTitle)
+                    .append("author", bookAuthor)
+                    .append("category", bookCategory)
+                    .append("image", bookImage)
+                    .append("published", datePublished);
+            booksCollection.insertOne(newBook);
+
+            System.out.println("Book created successfully");
+            return true; // Book successfully added
+
+        } catch (MongoException e) {
+            // Handle MongoDB exceptions
+            System.err.println("Error adding a book: " + e.getMessage());
+            return false; // Return false to indicate failure
+        } catch (Exception e) {
+            // Catch any unexpected exceptions
+            System.err.println("Unexpected error: " + e.getMessage());
+            return false; // Return false to indicate failure
+        }
+    }
+    public static List<Document> getBooks() {
+        // Get the collection from MongoDB
+        MongoCollection<Document> booksCollection = database.getCollection("books");
+
+        // Retrieve all books from the collection
+        List<Document> books = new ArrayList<>();
+        booksCollection.find().into(books);
+
+        return books;
+    }
+
+    public static List<Document> getBooksByAuthor(String author) {
+        // Get the collection from MongoDB
+        MongoCollection<Document> booksCollection = database.getCollection("books");
+
+        // Query to get books by a specific author
+        List<Document> books = new ArrayList<>();
+        booksCollection.find(eq("author", author)).into(books);
+
+        return books;
+    }
+
+    public static List<Document> getBooksByTitle(String title) {
+        // Get the collection from MongoDB
+        MongoCollection<Document> booksCollection = database.getCollection("books");
+
+        // Query to get books by a specific title
+        List<Document> books = new ArrayList<>();
+        booksCollection.find(eq("title", title)).into(books);
+
+        return books;
+    }
+
+    public static Boolean addMember(String fullName, String email, String membership, String joinDate) {
+        try {
+            // Get the "members" collection
+            MongoCollection<Document> membersCollection = database.getCollection("books");
+
+            // Check if the member already exists
+            Document existingMember = membersCollection.find(eq("email", email)).first();
+            if (existingMember != null) {
+                System.out.println("Member already exists");
+                return false; //Member already in the database
+            }
+
+            // Create and insert a new member document
+            Document newBook = new Document("fullname", fullName)
+                    .append("email", email)
+                    .append("membership", membership)
+                    .append("join", joinDate);
+            membersCollection.insertOne(newBook);
+
+            System.out.println("Member created successfully");
+            return true; // Member successfully added
+
+        } catch (MongoException e) {
+            // Handle MongoDB exceptions
+            System.err.println("Error adding a member: " + e.getMessage());
+            return false; // Return false to indicate failure
+        } catch (Exception e) {
+            // Catch any unexpected exceptions
+            System.err.println("Unexpected error: " + e.getMessage());
+            return false; // Return false to indicate failure
+        }
+    }
+
+    public static List<Document> getMembers() {
+        // Get the collection from MongoDB
+        MongoCollection<Document> membersCollection = database.getCollection("members");
+
+        // Retrieve all members from the collection
+        List<Document> members = new ArrayList<>();
+        membersCollection.find().into(members);
+
+        return members;
+    }
+
+
+
 
 
     public static void main( String[] args ) {
@@ -132,6 +221,7 @@ public class MongoDBConnection {
             database.runCommand(new Document("ping", 1));
             // Check Connection
             System.out.println("Pinged your deployment. You successfully connected to MongoDB!");
+//            addBook("Harry Potter" , "JK Rowlings", "Scifi", "https://hello.com/sample.jpg", new Date());
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
