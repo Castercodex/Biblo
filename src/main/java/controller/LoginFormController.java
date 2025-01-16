@@ -29,7 +29,13 @@ public class LoginFormController {
             errorLabel.getStyleClass().clear();
             errorLabel.getStyleClass().add("success");
             passwordField.clear();
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/Dashboard.fxml")));
+
+            FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/ui/Dashboard.fxml")));
+            Parent root = loader.load();
+
+            DashboardController homeController = loader.getController();
+            homeController.setLoginEmail(emailField.getText());
+
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);

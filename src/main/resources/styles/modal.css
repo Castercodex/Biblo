@@ -52,11 +52,65 @@
     -fx-text-fill: #5e5e5e;
     -fx-font-size: 20;
 }
+.table{
+    -fx-background-color: transparent;
+}
+
+.table-row-cell.overdue-row {
+    -fx-background-color: #ff0000; /* Light red background */
+    -fx-pref-height: 100px;
+}
+
+/* For normal rows */
+.table-row-cell.normal-row {
+    -fx-background-color: #00ff00; /* Light green background */
+    -fx-pref-height: 100px;
+}
+
 .error {
     -fx-border-color: red;
     -fx-border-width: 2px;
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
+}
+.grid-pane {
+    -fx-hgap: 10px;
+    -fx-vgap: 10px;
+    -fx-padding: 20px;
+}
+
+/* Styling for each book item VBox */
+.vbox {
+    -fx-alignment: center;
+    -fx-background-color: #f9f9f9;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-effect: dropshadow(gaussian, #888, 10, 0, 0, 0);
+}
+
+/* Styling for the ImageView */
+.image-view {
+    -fx-fit-width: 100px;
+    -fx-fit-height: 100px;
+    -fx-preserve-ratio: true;
+    -fx-border-radius: 50%;
+}
+
+/* Label styling */
+.label {
+    -fx-font-size: 14px;
+}
+
+.label.title {
+    -fx-font-weight: bold;
+}
+
+.label.author {
+    -fx-font-style: italic;
+}
+
+.label.date {
+    -fx-text-fill: grey;
 }
 
 .success {

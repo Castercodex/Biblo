@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="635.0" prefWidth="773.0" stylesheets="@../../styles/modal.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.addMemberModal">
+    <children>
+        <AnchorPane layoutX="33.0" layoutY="59.0" prefHeight="576.0" prefWidth="707.0" AnchorPane.leftAnchor="33.0" AnchorPane.rightAnchor="33.0">
+            <children>
+                <TextField fx:id="fullname" layoutX="6.0" layoutY="24.0" prefHeight="68.0" prefWidth="696.0" promptText="Enter Member Full Name" styleClass="input" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+                <TextField fx:id="email" layoutX="6.0" layoutY="102.0" prefHeight="68.0" prefWidth="696.0" promptText="Member Email Address" styleClass="input" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+                <TextField fx:id="status" layoutX="10.0" layoutY="257.0" prefHeight="68.0" prefWidth="696.0" promptText="Status" styleClass="input" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+                <Button fx:id="addBtn" layoutX="120.0" layoutY="420.0" mnemonicParsing="false" onAction="#addMemberEvent" styleClass="primaryBtn" text="Add" AnchorPane.leftAnchor="120.0" />
+                <Button fx:id="clearBtn" layoutX="388.0" layoutY="420.0" mnemonicParsing="false" onAction="#clearInputs" text="Clear" AnchorPane.rightAnchor="119.0">
+                    <styleClass>
+                        <String fx:value="primaryBtn" />
+                        <String fx:value="secondaryBtn" />
+                    </styleClass>
+                </Button>
+                <DatePicker fx:id="datePub" layoutX="10.0" layoutY="180.0" prefHeight="68.0" prefWidth="687.0" promptText="Membership Start Date" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                    <styleClass>
+                        <String fx:value="input" />
+                        <String fx:value="date-picker" />
+                    </styleClass></DatePicker>
+                <Label fx:id="message" alignment="CENTER" contentDisplay="CENTER" layoutX="6.0" layoutY="349.0" prefHeight="26.0" prefWidth="696.0" styleClass="infoLabel" />
+            </children>
+        </AnchorPane>
+        <Text layoutX="33.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Add A New Member" />
+        <Button layoutX="703.0" layoutY="22.0" mnemonicParsing="false" onAction="#closeModal" style="-fx-background-color: red; -fx-text-fill: white; -fx-background-radius: 50;" text="X" AnchorPane.rightAnchor="33.0">
+            <font>
+                <Font name="Helvetica Bold" size="18.0" />
+            </font>
+        </Button>
+    </children>
+</AnchorPane>

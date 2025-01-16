@@ -91,7 +91,7 @@
             </AnchorPane>
             <AnchorPane layoutY="198.0" prefHeight="130.0" prefWidth="782.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
-                  <Button graphicTextGap="10.0" layoutX="14.0" layoutY="28.0" mnemonicParsing="false" onAction="#openModal" prefHeight="56.0" prefWidth="325.0" styleClass="dashPrim" text="Add new book" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" AnchorPane.leftAnchor="14.0">
+                  <Button graphicTextGap="10.0" layoutX="14.0" layoutY="28.0" mnemonicParsing="false" onAction="#openModal" prefHeight="56.0" prefWidth="751.0" styleClass="dashPrim" text="Add new book" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" AnchorPane.leftAnchor="14.0">
                      <font>
                         <Font name="Helvetica" size="17.0" />
                      </font>
@@ -106,18 +106,6 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="443.0" layoutY="28.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="325.0" text="Manage inventory" textAlignment="CENTER" textFill="#5e5e5e" textOverrun="CLIP" AnchorPane.rightAnchor="14.0">
-                     <font>
-                        <Font name="Helvetica" size="17.0" />
-                     </font>
-                     <styleClass>
-                        <String fx:value="dashBtn" />
-                        <String fx:value="dashSec" />
-                     </styleClass>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
                </children>
             </AnchorPane>
             <Text layoutX="15.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 20;" styleClass="title" text="Dashboard" />
@@ -127,7 +115,6 @@
                 <TableColumn fx:id="tableID" prefWidth="75.0" styleClass="columns" text="ID" />
                 <TableColumn fx:id="memberCol" prefWidth="112.0" styleClass="columns" text="Member" />
                   <TableColumn fx:id="titleCol" prefWidth="161.0" styleClass="columns" text="Title" />
-                  <TableColumn fx:id="authorCol" prefWidth="118.0" styleClass="columns" text="Author" />
                   <TableColumn fx:id="overdueCol" prefWidth="105.0" styleClass="columns" text="Overdue" />
                   <TableColumn fx:id="returnCol" prefWidth="103.0" styleClass="columns" text="Return date" />
               </columns>

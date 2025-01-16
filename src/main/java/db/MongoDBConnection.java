@@ -8,18 +8,17 @@ import com.mongodb.client.*;
 import com.password4j.Hash;
 import com.password4j.Password;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ArrayList;
-
 
 
 public class MongoDBConnection {
     // Database Connection
     private static final String uri = "mongodb+srv://admin:admin%40ESTA@cluster0.9eieh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
     private static final MongoClient mongoClient = MongoClients.create(uri);
-    private static final MongoDatabase database = mongoClient.getDatabase("biblo");
+    public static final MongoDatabase database = mongoClient.getDatabase("biblo");
     public static String signupError;
     public static String loginError;
 
@@ -87,6 +86,7 @@ public class MongoDBConnection {
 
             // Create a new user document and insert it into the database
             Document newUser = new Document("email", email)
+                    .append("name", fullName)
                     .append("password", password)
                     .append("fullName", fullName);
             userCollection.insertOne(newUser);
@@ -144,6 +144,10 @@ public class MongoDBConnection {
 
         return books;
     }
+    public Document getBookByTitle(String title) {
+        MongoCollection<Document> booksCollection = database.getCollection("books"); // Replace "books" with your collection name
+        return booksCollection.find(new Document("title", title)).first();
+    }
 
     public static List<Document> getBooksByAuthor(String author) {
         // Get the collection from MongoDB
@@ -170,7 +174,7 @@ public class MongoDBConnection {
     public static Boolean addMember(String fullName, String email, String membership, String joinDate) {
         try {
             // Get the "members" collection
-            MongoCollection<Document> membersCollection = database.getCollection("books");
+            MongoCollection<Document> membersCollection = database.getCollection("members");
 
             // Check if the member already exists
             Document existingMember = membersCollection.find(eq("email", email)).first();
@@ -200,10 +204,90 @@ public class MongoDBConnection {
         }
     }
 
+    public static Boolean addLoan(String userId, String fullname, String bookId, String title, String loanStart, String loanReturn) {
+        try {
+            // Get the loans collection
+            MongoCollection<Document> loansCollection = database.getCollection("loans");
+
+            // Check if the member already exists
+            Document existingLoanMember = loansCollection.find(and(eq("userId", userId), eq("bookId", bookId))).first();
+            if (existingLoanMember != null) {
+                System.out.println("Loan already exists");
+                return false;
+            }
+
+            // Create and insert a new member document
+            Document newBook = new Document("userId", userId)
+                    .append("fullname", fullname)
+                    .append("bookId", bookId)
+                    .append("title", title)
+                    .append("loanStartDate", loanStart)
+                    .append("loanReturnDate", loanReturn);
+            loansCollection.insertOne(newBook);
+
+            System.out.println("Member created successfully");
+            return true; // Member successfully added
+
+        } catch (MongoException e) {
+            // Handle MongoDB exceptions
+            System.err.println("Error adding a member: " + e.getMessage());
+            return false; // Return false to indicate failure
+        } catch (Exception e) {
+            // Catch any unexpected exceptions
+            System.err.println("Unexpected error: " + e.getMessage());
+            return false; // Return false to indicate failure
+        }
+    }
+
+    public static Boolean  removeLoan(String id){
+        try{
+            MongoCollection<Document> loansCollection = database.getCollection("loans");
+            ObjectId ObjectId = new ObjectId(id);
+
+            Document existingLoanMember = loansCollection.find(eq("_id", ObjectId)).first();
+            if (existingLoanMember == null) {
+                System.out.println("Loan does not exist");
+
+                return false;
+
+            } else{
+                System.out.println("Loan already exists");
+                loansCollection.deleteOne(existingLoanMember);
+                return true;
+            }
+        }
+        catch(Exception e){
+            System.err.println("Unexpected error: " + e.getMessage());
+            return false;
+        }
+    }
+    public static Boolean  removeMember(String id){
+        try{
+            MongoCollection<Document> membersCollection = database.getCollection("members");
+            ObjectId ObjectId = new ObjectId(id);
+
+            Document existingMember = membersCollection.find(eq("_id", ObjectId)).first();
+            if (existingMember == null) {
+                System.out.println("Member does not exist");
+
+                return false;
+
+            } else{
+                System.out.println("Member already exists");
+                membersCollection.deleteOne(existingMember);
+                return true;
+            }
+        }
+        catch(Exception e){
+            System.err.println("Unexpected error: " + e.getMessage());
+            return false;
+        }
+    }
+
+
     public static List<Document> getMembers() {
         // Get the collection from MongoDB
         MongoCollection<Document> membersCollection = database.getCollection("members");
-
         // Retrieve all members from the collection
         List<Document> members = new ArrayList<>();
         membersCollection.find().into(members);
@@ -211,6 +295,32 @@ public class MongoDBConnection {
         return members;
     }
 
+    public static List<Document> getLoans() {
+        MongoCollection<Document> loansCollection = database.getCollection("loans");
+        List<Document> loans = new ArrayList<>();
+        loansCollection.find().into(loans);
+
+        return loans;
+
+    }
+
+    public static Document getUserByEmail(String email) {
+        // Ensure that 'database' is initialized
+        if (database == null) {
+            System.out.println("Database connection is not initialized.");
+            return null;
+        }
+
+        // Get the members collection from the database
+        MongoCollection<Document> usersCollection = database.getCollection("users");
+
+        // Query the collection to find a user by email (case-insensitive)
+        Document query = new Document("email", new Document("$regex", "^" + email + "$").append("$options", "i"));
+        FindIterable<Document> result = usersCollection.find(query); // Execute query
+
+        // Return the first match (if any)
+        return result.first(); // returns the first document or null if no match found
+    }
 
 
 

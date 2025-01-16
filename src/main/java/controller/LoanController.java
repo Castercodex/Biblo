@@ -15,41 +15,32 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.bson.Document;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class HomeController {
+public class LoanController {
 
     @FXML
-    private Text booksCount;
+    private TableView<HomeController.Loan> tableContainer;
     @FXML
-    private Text membersCount;
+    private TableColumn<HomeController.Loan, String> tableID;
     @FXML
-    private Text borrowedCount;
+    private TableColumn<HomeController.Loan, String> titleCol;
     @FXML
-    private Text overdueCount;
+    private TableColumn<HomeController.Loan, String> memberCol;
+    @FXML
+    private TableColumn<HomeController.Loan, String> overdueCol;
+    @FXML
+    private TableColumn<HomeController.Loan, String> returnCol;
 
-    @FXML
-    private TableView<Loan> tableContainer;
-    @FXML
-    private TableColumn<Loan, String> tableID;
-    @FXML
-    private TableColumn<Loan, String> titleCol;
-    @FXML
-    private TableColumn<Loan, String> memberCol;
-    @FXML
-    private TableColumn<Loan, String> overdueCol;
-    @FXML
-    private TableColumn<Loan, String> returnCol;
-
-    private final ObservableList<Loan> loanData = FXCollections.observableArrayList();
+    private final ObservableList<HomeController.Loan> loanData = FXCollections.observableArrayList();
 
     // Inner class representing Loan details
     public static class Loan {
@@ -97,11 +88,6 @@ public class HomeController {
         List<Document> members = MongoDBConnection.getMembers();
         List<Document> borrowed = MongoDBConnection.getLoans();
 
-        // Set the counts
-        booksCount.setText(String.valueOf(books.size()));
-        membersCount.setText(String.valueOf(members.size()));
-        borrowedCount.setText(String.valueOf(borrowed.size()));
-
         // Configure TableView columns
         tableID.setCellValueFactory(new PropertyValueFactory<>("id"));
         titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -115,7 +101,7 @@ public class HomeController {
         setTableColumnAlignmentToCenter(overdueCol);
         setTableColumnAlignmentToCenter(returnCol);
 
-        // Filter overdue loans and populate loanData
+        // Populate loanData with all borrowed books, regardless of overdue status
         for (Document loan : borrowed) {
             String id = loan.getObjectId("_id").toString();
             String title = loan.getString("title");
@@ -123,41 +109,36 @@ public class HomeController {
             String loanStartDate = loan.getString("loanStartDate");
             String loanReturnDate = loan.getString("loanReturnDate");
 
-            String overdue = checkLoanStatus(loanStartDate, loanReturnDate);
+            String overdueStatus = checkLoanStatus(loanStartDate, loanReturnDate);
 
-            if (overdue.endsWith("Overdue")) {
-                loanData.add(new Loan(id, title, memberName, overdue, loanReturnDate));
-            }
+            // Add all borrowed books to the loanData
+            loanData.add(new HomeController.Loan(id, title, memberName, overdueStatus, loanReturnDate));
         }
 
         // Set the items in the TableView
         tableContainer.setItems(loanData);
-        overdueCount.setText(String.valueOf(loanData.size()));
 
         // Highlight overdue rows
         tableContainer.setRowFactory(tv -> new TableRow<>() {
             @Override
-            protected void updateItem(Loan loan, boolean empty) {
+            protected void updateItem(HomeController.Loan loan, boolean empty) {
                 super.updateItem(loan, empty);
                 if (loan == null || empty) {
                     setStyle("");
                     getStyleClass().removeAll("overdue-row", "normal-row");
-
-                } else if (loan.getOverdue().endsWith("Overdue")) {
-                    setStyle("-fx-background-color: #ffcccc;"); // Light red background
-
+                } else if (loan.getOverdue().equals("Yes")) {
+                    setStyle("-fx-background-color: #ffcccc;"); // Light red background for overdue
                 } else {
-                    setStyle("");
-
+                    setStyle(""); // Default styling for non-overdue
                 }
             }
         });
     }
 
-    private void setTableColumnAlignmentToCenter(TableColumn<Loan, String> column) {
+    private void setTableColumnAlignmentToCenter(TableColumn<HomeController.Loan, String> column) {
         column.setStyle("-fx-alignment: CENTER;");
         column.setCellFactory(tc -> {
-            return new TableCell<Loan, String>() {
+            return new TableCell<HomeController.Loan, String>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
@@ -179,23 +160,57 @@ public class HomeController {
 
         if (today.isAfter(returnDate)) {
             long overdueDays = ChronoUnit.DAYS.between(returnDate, today);
-            return  overdueDays + " days" + " Overdue";
+            return "Yes"; // Overdue
         }
-        return "On time";
+        return "No"; // Not overdue
     }
 
+    // Custom cell formatting for the Overdue column (apply red/green text)
     @FXML
-    public void openModal(ActionEvent event) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ui/modal/addModal.fxml"));
-        Parent modalRoot = fxmlLoader.load();
+    private void setOverdueColumnStyle() {
+        overdueCol.setCellFactory(column -> new TableCell<HomeController.Loan, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item);
+                    if ("Yes".equals(item)) {
+                        setStyle("-fx-text-fill: red;"); // Red for overdue
+                    } else {
+                        setStyle("-fx-text-fill: green;"); // Green for on time
+                    }
+                }
+            }
+        });
+    }
+
+    public void openModal(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ui/modal/addLoan.fxml"));
+        Parent memberModalRoot = fxmlLoader.load();
 
         // Get the current stage from the event
-        Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Stage mainStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
         Stage modalStage = new Stage();
         modalStage.initModality(Modality.WINDOW_MODAL); // Make it a modal window
         modalStage.initOwner(mainStage); // Set the main stage as the owner
-        modalStage.setScene(new Scene(modalRoot));
+        modalStage.setScene(new Scene(memberModalRoot));
+        modalStage.showAndWait(); // Blocks until modal is closed
+    }
+    public void openRemoveModal(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ui/modal/removeLoan.fxml"));
+        Parent memberModalRoot = fxmlLoader.load();
+
+        // Get the current stage from the event
+        Stage mainStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+
+        Stage modalStage = new Stage();
+        modalStage.initModality(Modality.WINDOW_MODAL); // Make it a modal window
+        modalStage.initOwner(mainStage); // Set the main stage as the owner
+        modalStage.setScene(new Scene(memberModalRoot));
         modalStage.showAndWait(); // Blocks until modal is closed
     }
 }

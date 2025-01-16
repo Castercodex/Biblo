@@ -36,7 +36,7 @@ public class RegisterFormController {
 
         if (isRegistered) {
             // Load the Dashboard UI on successful registration
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/Dashboard.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/loginFormView.fxml")));
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
