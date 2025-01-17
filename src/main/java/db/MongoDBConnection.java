@@ -16,7 +16,7 @@ import java.util.List;
 
 public class MongoDBConnection {
     // Database Connection
-    private static final String uri = "mongodb+srv://admin:admin%40ESTA@cluster0.9eieh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+    private static final String uri = "";
     private static final MongoClient mongoClient = MongoClients.create(uri);
     public static final MongoDatabase database = mongoClient.getDatabase("biblo");
     public static String signupError;
